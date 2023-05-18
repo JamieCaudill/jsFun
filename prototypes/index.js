@@ -1,4 +1,5 @@
 const { kitties } = require('./datasets/kitties');
+const { clubs } = require('./datasets/clubs');
 const { puppers } = require('./datasets/puppers');
 const { mods } = require('./datasets/mods');
 const { cakes } = require('./datasets/cakes');
@@ -20,26 +21,29 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
-  orangePetNames() {
+  orangePetNames(animals) {
     // Return an array of just the names of kitties who are orange e.g.
         // ['Tiger', 'Snickers']
 
-        /* CODE GOES HERE */
-
+    return animals.filter(animal => animal.color === 'orange').map(animal => animal.name);
+    
     // Annotation:
-    // Write your annotation here as a comment
+    // Used filter to filter out any kitties that are not orange, and then used map to create an array of the orange kitties' names
   },
 
-  sortByAge() {
+  sortByAge(animals) {
     // Sort the kitties by their age
 
-    /* CODE GOES HERE */
-
-    // Annotation:
-    // Write your annotation here as a comment
+  const sorted = animals.sort((a, b) => b.age - a.age);
+  return sorted;
   },
 
-  growUp() {
+    // Annotation:
+    // Used sort to sort by age. b - a to sort in descending order
+
+
+
+  growUp(animals) {
     // Return an array of kitties who have all grown up by 2 years e.g.
     // [{
     //   name: 'Felicia',
@@ -53,7 +57,10 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    /* CODE GOES HERE */
+    return animals.map(animal => {
+      animal.age += 2;
+      return animal;
+    });
   }
 };
 
@@ -77,7 +84,7 @@ const kittyPrompts = {
 
 // DATASET: clubs from ./datasets/clubs
 const clubPrompts = {
-  membersBelongingToClubs() {
+  membersBelongingToClubs(clubs) {
     // Your function should access the clubs data through a parameter (it is being passed as an argument in the test file)
     // Create an object whose keys are the names of people, and whose values are
     // arrays that include the names of the clubs that person is a part of. e.g.
@@ -86,11 +93,28 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
+    
 
-    /* CODE GOES HERE */
+  // input: clubs array of objects
+  // output: array of objects
+  // steps: 
+    // access each individual member and make their name a key in new object
+    // check for duplicates
+    // if that name is in a club, add the club to the name key
+    // return new array
 
+    return clubs.reduce((acc, club) => {
+      club.members.forEach(member => {
+        if(!acc[member]) {
+          acc[member] = [];
+        }
+        acc[member].push(club.club)
+      })
+      return acc;
+    }, {})
+    
     // Annotation:
-    // Write your annotation here as a comment
+    // I used reduce because the ouput consists of altered data types. I used reduce to sort through the nested array and a conditional to check for duplicates.
   }
 };
 
@@ -122,10 +146,17 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    /* CODE GOES HERE */
+    // Thinking map, because the returned array is the same length, and there are no altered data types.
 
-    // Annotation:
-    // Write your annotation here as a comment
+    // changing course to reduce, because I am going to want a completely new array of objects since I will not be reusing certain keys
+
+      return mods.map((mod) => {
+        const studentsPerInstructor = mod.students / mod.instructors;
+        return { mod: mod.mod, studentsPerInstructor: studentsPerInstructor };
+      });
+    
+      // Annotation:
+    // I ended up going with map because the returned array is the same length as the source array.
   }
 };
 
@@ -157,9 +188,11 @@ const cakePrompts = {
     // ]
 
     /* CODE GOES HERE */
-
+    return cakes.map(cake => { 
+      return {flavor: cake.cakeFlavor, inStock: cake.inStock}
+    })
     // Annotation:
-    // Write your annotation here as a comment
+    // I used map to return an array of the same length with modified properties
   },
 
   onlyInStock() {
@@ -184,9 +217,9 @@ const cakePrompts = {
     // ]
 
     /* CODE GOES HERE */
-
+    return cakes.filter(cake => cake.inStock);
     // Annotation:
-    // Write your annotation here as a comment
+    // Used filter to filter out cakes that are not in stock
   },
 
   totalInventory() {
@@ -194,9 +227,10 @@ const cakePrompts = {
     // 59
 
     /* CODE GOES HERE */
+    return cakes.reduce((totalInStock, cake) => totalInStock = totalInStock + cake.inStock, 0)
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Used reduce to update the accumulator with each iteration
   },
 
   allToppings() {
@@ -205,9 +239,17 @@ const cakePrompts = {
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
     /* CODE GOES HERE */
+    return cakes.reduce((toppings, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!toppings.includes(topping)) {
+          toppings.push(topping);
+        }
+      })
+      return toppings;
+    }, [])
 
     // Annotation:
-    // Write your annotation here as a comment
+    // I used reduce with a nested forEach to access all toppings and return an array of unique toppings.
   },
 
   groceryList() {
@@ -222,9 +264,19 @@ const cakePrompts = {
     // }
 
     /* CODE GOES HERE */
+    return cakes.reduce((toppings, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!toppings[topping]) {
+          toppings[topping] = 1; 
+        } else {
+          toppings[topping]++;
+        }
+      })
+      return toppings;
+    }, {})
 
     // Annotation:
-    // Write your annotation here as a comment
+    // I used reduce and a nested for each to access the toppings, and intialized an empty object. I then used a conditional to check if the topping key exists, and if it does not, it initializes it with a value of 1, the else statement then adds an additional + 1 if it does exist. 
   }
 };
 
