@@ -309,7 +309,7 @@ const classPrompts = {
 
     /* CODE GOES HERE */
     return classrooms.filter(classroom => classroom.program === 'FE')
-    // }
+    },
     
     // Annotation:
     // filter
@@ -323,7 +323,18 @@ const classPrompts = {
     // }
 
     /* CODE GOES HERE */
-
+    return classrooms.reduce((newClassrooms, classroom) => {
+      if(!newClassrooms.feCapacity && !newClassrooms.beCapacity) {
+        newClassrooms.feCapacity = 0;
+        newClassrooms.beCapacity = 0;
+      }
+      if(classroom.program === 'FE') {
+        newClassrooms.feCapacity += classroom.capacity; 
+      } else {
+        newClassrooms.beCapacity += classroom.capacity;
+      }
+      return newClassrooms;
+    }, {})
     // Annotation:
     // Write your annotation here as a comment
   },
