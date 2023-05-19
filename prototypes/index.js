@@ -308,10 +308,11 @@ const classPrompts = {
     // ]
 
     /* CODE GOES HERE */
-
+    return classrooms.filter(classroom => classroom.program === 'FE')
+    // }
+    
     // Annotation:
-    // Write your annotation here as a comment
-  },
+    // filter
 
   totalCapacities() {
     // Create an object where the keys are 'feCapacity' and 'beCapacity',
