@@ -358,7 +358,7 @@ const classPrompts = {
 // DATASET: books from './datasets/books
 
 const bookPrompts = {
-  removeViolence() {
+  removeViolence(books) {
     // Your function should access the books data through a parameter (it is being passed as an argument in the test file)
     // return an array of all book titles that are not horror or true crime. Eg:
 
@@ -370,12 +370,13 @@ const bookPrompts = {
 
 
     /* CODE GOES HERE */
-
+    const filteredBooks = books.filter(book => book.genre !== 'Horror' && book.genre !== 'True Crime');
+    return filteredBooks.map(book => book.title)
     // Annotation:
     // Write your annotation here as a comment
 
   },
-  getNewBooks() {
+  getNewBooks(books) {
     // return an array of objects containing all books that were
     // published in the 90's and 00's. Inlucde the title and the year Eg:
 
@@ -384,6 +385,9 @@ const bookPrompts = {
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
     /* CODE GOES HERE */
+    return books
+      .filter(book => book.published > 1990)
+      .map(filterBook => ({title: filterBook.title, year: filterBook.published}))
 
     // Annotation:
     // Write your annotation here as a comment
@@ -400,11 +404,12 @@ const bookPrompts = {
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
     /* CODE GOES HERE */
-
+  return books
+    .filter(book => book.published > year)
+    .map(filteredBook => ({title: filteredBook.title, year: filteredBook.published}))
     // Annotation:
     // Write your annotation here as a comment
   }
-
 };
 
 
@@ -422,6 +427,18 @@ const weatherPrompts = {
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
     /* CODE GOES HERE */
+    // Access: weather.temperature.high & weather.temperature.low
+    // Get average
+    // return new array of average temperatures. Just numbers. Map
+
+    const findAverages = weather.map(location => {    
+    const high = location.temperature.high
+    const low = location.temperature.low
+    return (high + low)/2;
+    })
+
+    return findAverages;
+
 
     // Annotation:
     // Write your annotation here as a comment
@@ -435,7 +452,13 @@ const weatherPrompts = {
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
     /* CODE GOES HERE */
+    // Access weather.location and weather.type
+    // filter by 'sunny'
+    // map into array of sentences. location is type.
 
+    return weather
+      .filter(place => place.type.toLowerCase().includes('sunny'))
+      .map(sunnyPlace => `${sunnyPlace.location} is ${sunnyPlace.type}.`);
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -449,7 +472,16 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    /* CODE GOES HERE */
+    // Access weather.humidity
+    // reduce
+      // replace acc if humidity is greater than
+
+    return weather.reduce((acc, curr) => {
+      if(curr.humidity > acc.humidity) {
+        acc = curr;
+      }
+      return acc;
+    });
 
     // Annotation:
     // Write your annotation here as a comment
