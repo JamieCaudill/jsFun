@@ -508,6 +508,26 @@ const nationalParksPrompts = {
     //}
 
     /* CODE GOES HERE */
+    // Access visited
+      // if false add to parksToVisit array
+      // if true add to parksVisited array
+
+    return nationalParks.reduce((parks, park) => { 
+      if(park.visited) {
+        if(!parks.parksVisited) {
+          (parks.parksVisited = [])
+        }
+        parks.parksVisited.push(park.name)
+
+      } else {
+        if(!parks.parksToVisit) {
+          parks.parksToVisit = [];
+        }
+        parks.parksToVisit.push(park.name)
+      }
+      return parks;
+
+    }, {})
 
     // Annotation:
     // Write your annotation here as a comment
@@ -524,7 +544,12 @@ const nationalParksPrompts = {
 
 
     /* CODE GOES HERE */
-
+    return nationalParks.reduce((parks, park) => {
+      const location = park.location
+      console.log(location)
+      parks.push({ [location]: park.name })
+      return parks;
+    }, [])
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -546,6 +571,21 @@ const nationalParksPrompts = {
     //   'rock climbing' ]
 
     /* CODE GOES HERE */
+    // Access park.activities array
+      // spread operator?
+      // prevent duplicates
+
+    return nationalParks.reduce((acc, curr) => {
+      curr.activities.forEach(activity => {
+        if (!acc.includes(activity)) {
+          acc.push(activity)
+        }
+      })
+      return acc;
+    }, [])
+    
+    
+
 
     // Annotation:
     // Write your annotation here as a comment
