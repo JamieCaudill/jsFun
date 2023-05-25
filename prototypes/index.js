@@ -546,7 +546,6 @@ const nationalParksPrompts = {
     /* CODE GOES HERE */
     return nationalParks.reduce((parks, park) => {
       const location = park.location
-      console.log(location)
       parks.push({ [location]: park.name })
       return parks;
     }, [])
@@ -612,6 +611,10 @@ const breweryPrompts = {
     // 40
 
     /* CODE GOES HERE */
+    // counter, so maybe reduce
+    return breweries.reduce((counter, brewery) => {
+      return counter += brewery.beers.length;
+    }, 0)
 
     // Annotation:
     // Write your annotation here as a comment
@@ -627,7 +630,7 @@ const breweryPrompts = {
     // ]
 
     /* CODE GOES HERE */
-
+    return breweries.map(brewery => ({name: brewery.name, beerCount: brewery.beers.length}))
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -639,7 +642,8 @@ const breweryPrompts = {
 
 
     /* CODE GOES HERE */
-
+    const foundBrewery = breweries.filter(brewery => brewery.name === breweryName)
+    return foundBrewery[0].beers.length
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -650,7 +654,26 @@ const breweryPrompts = {
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
     /* CODE GOES HERE */
+    // Acess each brewery and then access the nested beers array
+      // compare the abv of each beer and return the highest using external variable
+      // or use reduce and initialize it with a beer
+    
 
+    return breweries
+      .reduce((beers, brewery) => {
+        return [...beers, ...brewery.beers]
+      }, [])
+      .reduce((highestAbv, beer) => {
+        if(beer.abv > highestAbv.abv) {
+          return beer;
+        } else {
+           return highestAbv;
+        }       
+      })
+    
+
+ 
+    
     // Annotation:
     // Write your annotation here as a comment
   }
